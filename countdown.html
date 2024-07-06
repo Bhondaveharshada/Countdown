@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CountDown</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+
+        }
+
+         .countdown-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 40vh; /* Full height of the viewport */
+            width:35%;
+            border: 2px solid black; /* Border for visual reference */
+            border-radius:15px;
+            transition: box-shadow 0.3s ease;
+            background: linear-gradient(to right, #833ab4, #e612a5,#fcb045);
+
+        }
+        .countdown-contents {
+            text-align: center;
+        }
+
+        .countdown-timer {
+            font-size: 30px;
+            font-weight: bolder;
+            color: #fff;
+            margin-bottom: 10px;
+
+
+        }
+
+        .countdown-label {
+            color: #222;
+            font-size: 24px;
+
+        }
+        .countdown-container:hover{
+            box-shadow: 0 0 10px 7px ;
+        }
+        .countdown-contents input{
+            margin-bottom: 20px;
+            width: 150px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+            transition: box-shadow 0.1s ease;
+            
+        }
+        .countdown-contents input:hover{
+            box-shadow: 0 4px 8px orange2;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="countdown-container">
+        <div class="countdown-contents">
+            <input class="form-control" type="number" id="year" placeholder="Enter target year" required>
+
+            <div class="countdown-timer" id="countdown">Enter a year to start countdown</div>
+            <div class="countdown-label" id="untiltheyear">until the target year</div>
+        </div>
+    </div>
+
+</body>
+<script>
+    let countdownInterval;
+    
+    document.getElementById('year').addEventListener('change',function(){
+    
+    const untliYear = document.getElementById('year').value;
+    if(!untliYear || isNaN(untliYear)||untliYear.length !=4){
+        document.getElementById("countdown").innerHTML ="plzz enter valid target year"
+        return;
+    }
+    document.getElementById("untiltheyear").innerHTML =`Until the ${untliYear}.`;
+
+    
+
+
+    const targetDate = new Date(`${untliYear}-01-01T00:00:00`);
+
+    if (countdownInterval) {
+                clearTimeout(countdownInterval);
+            }
+    
+    function updateCountdown() {
+        
+        const currentDate = new Date();
+
+        const timeDifference = targetDate - currentDate;
+
+        if(timeDifference<=0){
+            document.getElementById("countdown").innerHTML = "Countdown Reached!!..";
+            return;
+        }
+
+        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+        const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+
+        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60))
+
+        const seconds = Math.floor((timeDifference % (1000 * 60)) / (1000))
+
+        document.getElementById('countdown').innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`
+
+        countdownInterval=setTimeout(updateCountdown, 1000);
+       
+    }
+    updateCountdown()
+    console.log(countdownInterval);
+
+    });
+    
+
+</script>
+
+</html>
